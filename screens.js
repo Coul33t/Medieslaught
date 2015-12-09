@@ -42,17 +42,45 @@ Game.Screen.playScreen = {
 			}
 		}
 
-		var generator = new ROT.Map.Uniform(mapWidth, mapHeight, {timeLimit: 5000});
+		// A chance to create a dungeon, or a cave
+		// Dungeon
+		if(ROT.RNG.getUniform() > 0.5) {
+			
+			var generator = new ROT.Map.Uniform(mapWidth, mapHeight, {timeLimit: 5000});
 
-		generator.create(function(x, y, v) {
-			if(v === 0) {
-				map[x][y] = Game.Tile.floorTile;
-			}
+			generator.create(function(x, y, v) {
+				if(v === 0) {
+					map[x][y] = Game.Tile.floorTile;
+				}
 
-			else {
-				map[x][y] = Game.Tile.wallTile;
-			}
-		});
+				else {
+					map[x][y] = Game.Tile.wallTile;
+				}
+			});
+
+		}
+
+		// Cave
+		else {
+
+	        var generator = new ROT.Map.Cellular(80, 24);
+	        generator.randomize(0.5);
+	        var iterNumber = 3;
+	        // Iteratively smoothen the map
+	        for (var i = 0; i < iterNumber - 1; i++) {
+	            generator.create();
+	        }
+	        // Smoothen it one last time and then update our map
+	        generator.create(function(x,y,v) {
+	            if (v === 1) {
+	                map[x][y] = Game.Tile.floorTile;
+	            } else {
+	                map[x][y] = Game.Tile.wallTile;
+	            }
+	        });
+
+		}
+		
 
 		this._map = new Game.Map(map);
 
