@@ -25,7 +25,7 @@ Game.Entity = function(properties) {
 			mixins[i].init.call(this, properties);
 		}
 	}
-}
+};
 
 Game.Entity.extend(Game.Glyph);
 
@@ -37,7 +37,7 @@ Game.Entity.prototype.setX = function(x) {
 	this._x = x;
 }
 
-Game.Entity.prototype.SetY = function(y) {
+Game.Entity.prototype.setY = function(y) {
 	this._y = y;
 }
 

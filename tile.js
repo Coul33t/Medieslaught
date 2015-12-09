@@ -9,8 +9,12 @@ Game.Tile = function(properties) {
 
 Game.Tile.extend(Game.Glyph);
 
-Game.Tile.prototype.getGlyph = function() {
-	return this._glyph;
+Game.Tile.prototype.isWalkable = function() {
+	return this._isWalkable;
+}
+
+Game.Tile.prototype.isDiggable = function() {
+	return this._isDiggable;
 }
 
 Game.Tile.nullTile = new Game.Tile({});
