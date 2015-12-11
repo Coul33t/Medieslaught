@@ -7,8 +7,8 @@ Game.Screen.startScreen = {
 	exit: function() {console.log("Exited start screen."); },
 
 	render: function(display) {
-		display.drawText(1, 1, "%c{yellow}Javascript Roguelike");
-		display.drawText(1, 2, "Press [Enter] to begin the hunt !");
+		display.drawText(1, 1, "%c{yellow}Kill the Witches");
+		display.drawText(1, 4, "Press [Enter] to begin the hunt !");
 	},
 
 	handleInput: function(inputType, inputData) {
@@ -61,7 +61,7 @@ Game.Screen.playScreen = {
 		// Cave
 		else {
 
-	        var generator = new ROT.Map.Cellular(80, 24);
+	        var generator = new ROT.Map.Cellular(mapWidth, mapHeight);
 	        generator.randomize(0.5);
 	        var iterNumber = 3;
 	        // Iteratively smoothen the map
@@ -78,16 +78,18 @@ Game.Screen.playScreen = {
 	        });
 
 		}
-		
-
-		this._map = new Game.Map(map);
 
 		console.log("Map generated.");
 
 		this._player = new Game.Entity(Game.PlayerTemplate);
+		this._map = new Game.Map(map, this._player);
+
 		var position = this._map.getRandomFloorPosition();
 		this._player.setX(position.x);
 		this._player.setY(position.y);
+
+		
+		this._map.getEngine().start();
 	},
 	
 	exit: function() {console.log("Exited play screen."); },
@@ -114,16 +116,21 @@ Game.Screen.playScreen = {
 			}
 		}
 
-		display.draw(this._player.getX() - topLeftX,
-					this._player.getY() - topLeftY,
-					this._player.getChar(),
-					this._player.getForeground(),
-					this._player.getBackground()
-		);
+		var entities = this._map.getEntities();
 
-		/*display.drawText(1, 1, "%c{red}Test 1");
-		display.drawText(1, 2, "Press [a] to hunt witches !");
-		display.drawText(1, 3, "Witches successfully hunted : " + this._nbPress);*/
+		for (var i = 0; i < entities.length; i++) {
+			var entity = entities[i];
+			if (entity.getX() >= topLeftX && entity.getY() >= topLeftY &&
+                entity.getX() < topLeftX + screenWidth &&
+                entity.getY() < topLeftY + screenHeight) {
+					display.draw(
+						entity.getX() - topLeftX,
+						entity.getY() - topLeftY,
+						entity.getChar(),
+						entity.getForeground(),
+						entity.getBackground());
+			}
+		}
 	},
 
 	handleInput: function(inputType, inputData) {
@@ -143,6 +150,8 @@ Game.Screen.playScreen = {
 			else if(inputData.keyCode == ROT.VK_NUMPAD4) {
 				this.move(-1, 0);
 			}
+
+			this._map.getEngine().unlock();
 		}
 	},
 

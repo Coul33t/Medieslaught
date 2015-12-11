@@ -7,7 +7,11 @@ Game.Entity = function(properties) {
 	this._x = properties["x"] || 0;
 	this._y = properties["y"] || 0;
 
+	this._map = null;
+
 	this._attachedMixins = {};
+
+	this._attachedMixinsGroups = {};
 
 	var mixins = properties['mixins'] || [];
 
@@ -21,6 +25,10 @@ Game.Entity = function(properties) {
 
 		this._attachedMixins[mixins[i].name] = true;
 
+		if(mixins[i].groupName) {
+			this._attachedMixinsGroups[mixins[i].groupName] = true;
+		}
+
 		if (mixins[i].init) {
 			mixins[i].init.call(this, properties);
 		}
@@ -28,6 +36,18 @@ Game.Entity = function(properties) {
 };
 
 Game.Entity.extend(Game.Glyph);
+
+
+
+Game.Entity.prototype.hasMixin = function(obj) {
+	if(typeof obj === 'object') {
+		return this._attachedMixins[obj.name];
+	}
+
+	else {
+		return this._attachedMixins[obj] || this._attachedMixinsGroups[obj];
+	}
+}
 
 Game.Entity.prototype.setName = function(name) {
 	this._name = name;
@@ -41,6 +61,10 @@ Game.Entity.prototype.setY = function(y) {
 	this._y = y;
 }
 
+Game.Entity.prototype.setMap = function(map) {
+	this._map = map;
+}
+
 Game.Entity.prototype.getName = function() {
 	return this._name;
 }
@@ -51,4 +75,8 @@ Game.Entity.prototype.getX = function() {
 
 Game.Entity.prototype.getY = function() {
 	return this._y;
+}
+
+Game.Entity.prototype.getMap = function() {
+	return this._map;
 }

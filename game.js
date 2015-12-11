@@ -12,10 +12,8 @@ var Game = {
 		var bindEventToScreen = function(event) {
 
 			window.addEventListener(event, function(e) {
-				if(game._currentScreen != null) {
+				if(game._currentScreen !== null) {
 					game._currentScreen.handleInput(event, e);
-					game._display.clear();
-					game._currentScreen.render(game._display);
 				}
 			});
 
@@ -24,6 +22,11 @@ var Game = {
 		bindEventToScreen('keydown');
 		bindEventToScreen('keyup');
 		bindEventToScreen('keypress');
+	},
+
+	refresh: function() {
+		this._display.clear();
+		this._currentScreen.render(this._display);
 	},
 
 	getDisplay: function() {
@@ -39,7 +42,7 @@ var Game = {
 	},
 
 	switchScreen: function(screen) {
-		if(this._currentScreen != null) {
+		if(this._currentScreen !== null) {
 			this._currentScreen.exit();
 		}
 
@@ -47,12 +50,11 @@ var Game = {
 
 		this._currentScreen = screen;
 
-		if(!this._currentScreen != null) {
+		if(!this._currentScreen !== null) {
 			this._currentScreen.enter();
-			this._currentScreen.render(this._display);
+			this.refresh();
 		}
 	}
-
 }
 
 window.onload = function() {
