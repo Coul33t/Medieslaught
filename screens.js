@@ -139,16 +139,32 @@ Game.Screen.playScreen = {
 				this.move(0, -1);
 			}
 
+			else if(inputData.keyCode == ROT.VK_NUMPAD9) {
+				this.move(1, -1);
+			}
+
 			else if(inputData.keyCode == ROT.VK_NUMPAD6) {
 				this.move(1, 0);
+			}
+
+			else if(inputData.keyCode == ROT.VK_NUMPAD3) {
+				this.move(1, 1);
 			}
 
 			else if(inputData.keyCode == ROT.VK_NUMPAD2) {
 				this.move(0, 1);
 			}
 
+			else if(inputData.keyCode == ROT.VK_NUMPAD1) {
+				this.move(-1, 1);
+			}
+
 			else if(inputData.keyCode == ROT.VK_NUMPAD4) {
 				this.move(-1, 0);
+			}
+
+			else if(inputData.keyCode == ROT.VK_NUMPAD7) {
+				this.move(-1, -1);
 			}
 
 			this._map.getEngine().unlock();

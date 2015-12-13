@@ -3,7 +3,7 @@ Game.Entity = function(properties) {
 
 	Game.Glyph.call(this, properties);
 
-	this._name = properties["name"] || "default";
+	this._name = properties["name"] || "";
 	this._x = properties["x"] || 0;
 	this._y = properties["y"] || 0;
 

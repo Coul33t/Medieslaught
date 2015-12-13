@@ -11,7 +11,7 @@ Game.Map = function(tiles, player) {
 
 	this.addEntityAtRandomPosition(player);
 
-	for (var i = 0; i < 100 ; i++) {
+	for (var i = 0; i < 10 ; i++) {
 		this.addEntityAtRandomPosition(new Game.Entity(Game.FungusTemplate));
 	}
 };
@@ -63,7 +63,7 @@ Game.Map.prototype.getRandomFloorPosition = function() {
 	do {
 		x = Math.floor(Math.random() * this._width);
 		y = Math.floor(Math.random() * this._height);
-	} while(this.getTile(x, y) != Game.Tile.floorTile || this.getEntityAt(x, y));
+	} while(!this.isEmptyFloor(x, y));
 	return {x: x, y: y};
 };
 
@@ -87,4 +87,21 @@ Game.Map.prototype.addEntityAtRandomPosition = function(entity) {
 	entity.setX(position.x);
 	entity.setY(position.y);
 	this.addEntity(entity);
+}
+
+Game.Map.prototype.removeEntity = function(entity) {
+	for (var i = 0; i < this._entities.length ; i++) {
+		if(this._entities[i] == entity) {
+			this._entities.splice(i, 1);
+			break;
+		}
+	}
+
+	if(entity.hasMixin('Actor')) {
+		this._scheduler.remove(entity);
+	}
+}
+
+Game.Map.prototype.isEmptyFloor = function(x, y) {
+	return this.getTile(x, y) == Game.Tile.floorTile && !this.getEntityAt(x, y);
 }
