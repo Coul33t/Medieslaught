@@ -73,7 +73,7 @@ Game.Mixins.PlayerActor = {
 
 Game.Mixins.FungusActor = {
 	name: 'FungusActor',
-	groupeName: 'Actor',
+	groupName: 'Actor',
 
 	init: function() {
 		this._growthsRemaining = 5;
@@ -81,17 +81,19 @@ Game.Mixins.FungusActor = {
 
 	act: function() {
 		if(this._growthsRemaining > 0) {
-			if(Math.random() <= 0.02) {
-				do {
-					xOffset = Math.floor(Math.random() * 3) - 1;
-					yOffset = Math.floor(Math.random() * 3) - 1;
-				} while((xOffset == 0 && yOffset == 0) || !this.getMap().isEmptyFloor(this.getX() + xOffset, this.getY() + yOffset));
+			if(Math.random() <= 0.1) {
+				if(this.getMap().hasFreeNeighbor(this.getX(), this.getY())) {
+					do {
+						xOffset = Math.floor(Math.random() * 3) - 1;
+						yOffset = Math.floor(Math.random() * 3) - 1;
+					} while((xOffset == 0 && yOffset == 0) || !this.getMap().isEmptyFloor(this.getX() + xOffset, this.getY() + yOffset));
 
-				var entity = new Game.Entity(Game.FungusTemplate);
-				entity.setX(this.getX() + xOffset);
-				entity.setY(this.getY() + yOffset);
-				this.getMap().addEntity(entity);
-				this._growthsRemaining--;
+					var entity = new Game.Entity(Game.FungusTemplate);
+					entity.setX(this.getX() + xOffset);
+					entity.setY(this.getY() + yOffset);
+					this.getMap().addEntity(entity);
+					this._growthsRemaining--;
+				}	
 			}
 		}
 	}
@@ -102,11 +104,11 @@ Game.PlayerTemplate = {
 	character: '@',
 	foreground: 'white',
 	background: 'black',
-	mixins: [Game.Mixins.Moveable, Game.Mixins.PlayerActor, Game.Mixins.SimpleAttacker, Game.Mixins.Destructible]
+	mixins: [Game.Mixins.PlayerActor, Game.Mixins.Moveable, Game.Mixins.SimpleAttacker, Game.Mixins.Destructible]
 }
 
 Game.FungusTemplate = {
-	character: 'f',
+	character: 'F',
 	foreground: 'green',
 	mixins: [Game.Mixins.FungusActor, Game.Mixins.Destructible]
 }

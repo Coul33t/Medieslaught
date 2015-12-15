@@ -16,12 +16,11 @@ var Game = {
 					game._currentScreen.handleInput(event, e);
 				}
 			});
-
-		}
+		};
 
 		bindEventToScreen('keydown');
-		bindEventToScreen('keyup');
-		bindEventToScreen('keypress');
+		//bindEventToScreen('keyup');
+		//bindEventToScreen('keypress');
 	},
 
 	refresh: function() {

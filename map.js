@@ -7,11 +7,11 @@ Game.Map = function(tiles, player) {
 	this._entities = [];
 
 	this._scheduler = new ROT.Scheduler.Simple();
-	this._engine = new ROT.Engine(this._scheduler);
+    this._engine = new ROT.Engine(this._scheduler);
 
 	this.addEntityAtRandomPosition(player);
 
-	for (var i = 0; i < 10 ; i++) {
+	for (var i = 0; i < 10; i++) {
 		this.addEntityAtRandomPosition(new Game.Entity(Game.FungusTemplate));
 	}
 };
@@ -77,7 +77,7 @@ Game.Map.prototype.addEntity = function(entity) {
 
 	this._entities.push(entity);
 
-	if(entity.hasMixin('Actor')) {
+	if (entity.hasMixin('Actor')) {
 		this._scheduler.add(entity, true);
 	}
 }
@@ -104,4 +104,17 @@ Game.Map.prototype.removeEntity = function(entity) {
 
 Game.Map.prototype.isEmptyFloor = function(x, y) {
 	return this.getTile(x, y) == Game.Tile.floorTile && !this.getEntityAt(x, y);
+}
+
+Game.Map.prototype.hasFreeNeighbor = function(x, y) {
+	for (var i = -1; i < 2; i++) {
+		for (var j = -1; j < 2; j++) {
+			if(i != 0 || j != 0) {
+				if(this.isEmptyFloor(x+i, y+j)) {
+					return true;
+				}
+			}		
+		}
+	}
+	return false;
 }
