@@ -5,7 +5,7 @@ var Game = {
 	_screenHeight: 24,
 
 	init: function() {
-		this._display = new ROT.Display({width: this._screenWidth, height: this._screenHeight});
+		this._display = new ROT.Display({width: this._screenWidth, height: this._screenHeight + 1});
 
 		var game = this;
 

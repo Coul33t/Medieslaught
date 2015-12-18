@@ -118,3 +118,20 @@ Game.Map.prototype.hasFreeNeighbor = function(x, y) {
 	}
 	return false;
 }
+
+Game.Map.prototype.getEntitiesWithinRadius = function(x, y, radius) {
+	results = [];
+
+	var leftX = 	x - radius;
+	var rightX = 	x + radius;
+	var topY = 		y - radius;
+	var bottomY = 	y + radius;
+
+	for (var i = 0; i < this._entities.length; i++) {
+		 if (this._entities[i].getX() >= leftX && this._entities[i].getX() <= rightX &&  this._entities[i].getY() >= topY && this._entities[i].getY() <= bottomY) {
+        	results.push(this._entities[i]);
+        }
+	}
+
+	return results;
+}
